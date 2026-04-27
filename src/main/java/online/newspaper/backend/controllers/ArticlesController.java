@@ -3,10 +3,8 @@ package online.newspaper.backend.controllers;
 import online.newspaper.backend.models.Article;
 import online.newspaper.backend.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,13 +25,15 @@ public class ArticlesController {
     }
 
     @GetMapping("/main")
-    public List<Article> getFreshArticles() {
-        return articleService.findFreshArticles();
+    public Page<Article> getFreshArticles(@RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "5") int size) {
+        return articleService.findFreshArticlesWithPagination(page, size);
     }
 
     @GetMapping("/archive")
-    public List<Article> getArchiveArticles() {
-        return articleService.findArchiveArticles();
+    public Page<Article> getArchiveArticles(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "5") int size) {
+        return articleService.findArchiveArticlesWithPagination(page, size);
     }
 
 }

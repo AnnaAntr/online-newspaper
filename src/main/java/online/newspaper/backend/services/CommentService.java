@@ -1,6 +1,8 @@
 package online.newspaper.backend.services;
 
+import online.newspaper.backend.models.Article;
 import online.newspaper.backend.models.Comment;
+import online.newspaper.backend.repositories.ArticlesRepository;
 import online.newspaper.backend.repositories.CommentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,13 +15,26 @@ import java.util.List;
 public class CommentService {
 
     private final CommentsRepository commentsRepository;
+    private final ArticlesRepository articlesRepository;
 
     @Autowired
-    public CommentService(CommentsRepository commentsRepository) {
+    public CommentService(CommentsRepository commentsRepository, ArticlesRepository articlesRepository) {
         this.commentsRepository = commentsRepository;
+        this.articlesRepository = articlesRepository;
     }
 
-    public List<Comment> findALlCommentsForArticle(int article_id) {
-        return commentsRepository.findByArticleIdOrderByCreatedAtDesc(article_id);
+    public List<Comment> findALlCommentsForArticle(int articleId) {
+        return commentsRepository.findByArticleIdOrderByCreatedAtDesc(articleId);
+    }
+
+    public int getCommentsCountForArticle(int articleId) {
+        return commentsRepository.countByArticleId(articleId);
+    }
+
+    public Comment saveCommentForArticle(int articleId, Comment comment) {
+        Article foundArticleReference = articlesRepository.getReferenceById(articleId);
+        comment.setArticle(foundArticleReference);
+
+        return commentsRepository.save(comment);
     }
 }

@@ -3,10 +3,7 @@ package online.newspaper.backend.controllers;
 import online.newspaper.backend.models.Comment;
 import online.newspaper.backend.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +21,16 @@ public class CommentsController {
     @GetMapping("/{id}/comments")
     public List<Comment> getArticleComments(@PathVariable("id") int id) {
         return commentService.findALlCommentsForArticle(id);
+    }
+
+    @GetMapping("/{id}/comments/count")
+    public int getCommentsCountForArticle(@PathVariable("id") int id) {
+        return commentService.getCommentsCountForArticle(id);
+    }
+
+    // TODO if user is authenticated
+    @PostMapping("/{id}/comments")
+    public Comment createCommentForArticle(@PathVariable("id") int id, @RequestBody Comment comment) {
+        return commentService.saveCommentForArticle(id, comment);
     }
 }
