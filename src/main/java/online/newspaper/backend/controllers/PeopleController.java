@@ -5,6 +5,8 @@ import online.newspaper.backend.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/users")
 public class PeopleController {
@@ -16,10 +18,10 @@ public class PeopleController {
         this.personService = personService;
     }
 
-//    @GetMapping("/hello")
-//    public String hello() {
-//        return "hello world";
-//    }
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello world";
+    }
 
     @PostMapping
     public Person createPerson(@RequestBody Person person) {
