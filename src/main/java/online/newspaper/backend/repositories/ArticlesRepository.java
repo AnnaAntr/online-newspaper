@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public interface ArticlesRepository extends JpaRepository<Article, Integer> {
@@ -14,7 +15,7 @@ public interface ArticlesRepository extends JpaRepository<Article, Integer> {
 
     List<Article> findByCreatedAtBeforeOrderByCreatedAtDesc(LocalDateTime time);*/
 
-    Page<Article> findByCreatedAtAfterOrderByCreatedAtDesc(LocalDateTime time, Pageable pageable);
+    Page<Article> findByCreatedAtAfterOrderByCreatedAtDesc(Date time, Pageable pageable);
 
-    Page<Article> findByCreatedAtBeforeOrderByCreatedAtDesc(LocalDateTime time, Pageable pageable);
+    Page<Article> findByCreatedAtBeforeOrderByCreatedAtDesc(Date time, Pageable pageable);
 }

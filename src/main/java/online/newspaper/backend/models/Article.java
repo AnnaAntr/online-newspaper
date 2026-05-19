@@ -17,7 +17,7 @@ public class Article {
     @Column(name = "title", nullable = false, length = 255)
     private String title;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "image_url")
