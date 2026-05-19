@@ -14,12 +14,16 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "title", nullable = false, length = 255)
     private String title;
 
+    @Column(name = "content")
     private String content;
 
+    @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
@@ -30,6 +34,8 @@ public class Article {
     @OneToMany(mappedBy = "article")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<Like> likes;
+
+    public Article() {}
 
     public int getId() {
         return id;

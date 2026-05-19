@@ -23,6 +23,10 @@ public class PersonService {
         return foundUser.orElse(null);
     }
 
+    public boolean checkPersonExistsByEmail(String email) {
+        return peopleRepository.existsByEmail(email);
+    }
+
     public Person createPerson(Person person) {
         return peopleRepository.save(person);
     }

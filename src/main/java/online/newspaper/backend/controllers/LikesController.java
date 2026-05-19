@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/news")
+@RequestMapping("/likes")
 public class LikesController {
 
     private final LikeService likeService;
@@ -16,9 +16,9 @@ public class LikesController {
         this.likeService = likeService;
     }
 
-    @GetMapping("/{id}/likes/count")
-    public int getLikesCountForArticle(@PathVariable("id") int id) {
-        return likeService.getLikesCountForArticle(id);
+    @GetMapping("/{articleId}/count")
+    public int getLikesCountForArticle(@PathVariable("articleId") int articleId) {
+        return likeService.getLikesCountForArticle(articleId);
     }
 
     // TODO

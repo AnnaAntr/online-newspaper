@@ -11,8 +11,10 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "content", nullable = false, length = 1000)
     private String content;
 
+    @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
@@ -23,6 +25,8 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "article_id", referencedColumnName = "id")
     private Article article;
+
+    public Comment() {}
 
     public int getId() {
         return id;

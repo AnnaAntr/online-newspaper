@@ -18,10 +18,10 @@ public class PeopleController {
         this.personService = personService;
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello world";
-    }
+//    @GetMapping("/hello")
+//    public String hello() {
+//        return "hello world";
+//    }
 
     @PostMapping
     public Person createPerson(@RequestBody Person person) {

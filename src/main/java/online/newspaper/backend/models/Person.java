@@ -3,6 +3,7 @@ package online.newspaper.backend.models;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.List;
 
 @Entity
@@ -11,15 +12,19 @@ public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "id")
     private int id;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "surname", nullable = false)
     private String surname;
 
+    @Column(name = "email", nullable = false, unique = true)
+    @Email
     private String email;
 
+    @Column(name = "password", nullable = false)
     private String password;
 
     @OneToMany(mappedBy = "author")
@@ -29,6 +34,8 @@ public class Person {
     @OneToMany(mappedBy = "author")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<Like> likes;
+
+    public Person() {}
 
     public int getId() {
         return id;

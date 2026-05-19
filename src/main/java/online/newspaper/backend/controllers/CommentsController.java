@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/news")
+@RequestMapping("/comments")
 public class CommentsController {
 
     private final CommentService commentService;
@@ -18,19 +18,19 @@ public class CommentsController {
         this.commentService = commentService;
     }
 
-    @GetMapping("/{id}/comments")
-    public List<Comment> getArticleComments(@PathVariable("id") int id) {
-        return commentService.findALlCommentsForArticle(id);
+    @GetMapping("/{articleId}")
+    public List<Comment> getArticleComments(@PathVariable("articleId") int articleId) {
+        return commentService.findALlCommentsForArticle(articleId);
     }
 
-    @GetMapping("/{id}/comments/count")
-    public int getCommentsCountForArticle(@PathVariable("id") int id) {
-        return commentService.getCommentsCountForArticle(id);
+    @GetMapping("/{articleId}/count")
+    public int getCommentsCountForArticle(@PathVariable("v") int articleId) {
+        return commentService.getCommentsCountForArticle(articleId);
     }
 
     // TODO if user is authenticated
-    @PostMapping("/{id}/comments")
-    public Comment createCommentForArticle(@PathVariable("id") int id, @RequestBody Comment comment) {
-        return commentService.saveCommentForArticle(id, comment);
+    @PostMapping("/{articleId}")
+    public Comment createCommentForArticle(@PathVariable("articleId") int articleId, @RequestBody Comment comment) {
+        return commentService.saveCommentForArticle(articleId, comment);
     }
 }

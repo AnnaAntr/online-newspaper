@@ -18,6 +18,8 @@ public class Like {
     @JoinColumn(name = "article_id", referencedColumnName = "id")
     private Article article;
 
+    public Like() {}
+
     public int getId() {
         return id;
     }
