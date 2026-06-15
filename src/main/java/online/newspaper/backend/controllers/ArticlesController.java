@@ -19,6 +19,7 @@ public class ArticlesController {
         this.articleService = articleService;
     }
 
+    // TODO response entity
     @GetMapping("/{id}")
     public Article getOneArticle(@PathVariable("id") int id) {
         return articleService.findArticle(id);

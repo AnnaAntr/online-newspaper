@@ -18,11 +18,6 @@ public class PeopleController {
         this.personService = personService;
     }
 
-//    @GetMapping("/hello")
-//    public String hello() {
-//        return "hello world";
-//    }
-
     @PostMapping
     public Person createPerson(@RequestBody Person person) {
         return personService.createPerson(person);
@@ -32,9 +27,4 @@ public class PeopleController {
     public Person getOnePerson(@PathVariable("id") int id) {
         return personService.findPerson(id);
     }
-
-//    @GetMapping()
-//    public List<User> getUsers() {
-//        return userRepository.findAll();
-//    }
 }

@@ -49,7 +49,7 @@ public class PersonDetails implements UserDetails {
         return true;
     }
 
-    public Person getperson() {
+    public Person getPerson() {
         return this.person;
     }
 }

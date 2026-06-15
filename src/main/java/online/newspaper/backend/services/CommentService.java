@@ -5,6 +5,8 @@ import online.newspaper.backend.models.Comment;
 import online.newspaper.backend.repositories.ArticlesRepository;
 import online.newspaper.backend.repositories.CommentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +25,12 @@ public class CommentService {
         this.articlesRepository = articlesRepository;
     }
 
-    public List<Comment> findALlCommentsForArticle(int articleId) {
-        return commentsRepository.findByArticleIdOrderByCreatedAtDesc(articleId);
+//    public List<Comment> findALlCommentsForArticle(int articleId) {
+//        return commentsRepository.findByArticleIdOrderByCreatedAtDesc(articleId);
+//    }
+
+    public Page<Comment> findALlCommentsForArticle(int articleId, Pageable pageable) {
+        return commentsRepository.findByArticleIdOrderByCreatedAtDesc(articleId, pageable);
     }
 
     public int getCommentsCountForArticle(int articleId) {

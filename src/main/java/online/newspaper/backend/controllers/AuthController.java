@@ -8,7 +8,6 @@ import online.newspaper.backend.security.JWTUtil;
 import online.newspaper.backend.security.PersonDetails;
 import online.newspaper.backend.services.PersonService;
 import online.newspaper.backend.util.PersonValidator;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -50,7 +48,7 @@ public class AuthController {
             String jwt = jwtUtil.generateToken(loginRequest.getEmail());
 
             PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
-            Person person = personDetails.getperson();
+            Person person = personDetails.getPerson();
 
             return ResponseEntity.ok(new AuthResponse(
                     jwt,
@@ -66,9 +64,6 @@ public class AuthController {
                     .body("Ошибка авторизации");
         }
     }
-
-
-
 
     @PostMapping("/register")
     public ResponseEntity<?> performRegistration(@Valid @RequestBody RegisterRequest registerRequest) {

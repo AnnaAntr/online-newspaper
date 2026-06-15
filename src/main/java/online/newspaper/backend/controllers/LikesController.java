@@ -1,9 +1,17 @@
 package online.newspaper.backend.controllers;
 
-import online.newspaper.backend.models.Like;
+import online.newspaper.backend.dto.LikeResponse;
+import online.newspaper.backend.dto.LikeStatusResponse;
+import online.newspaper.backend.models.Person;
+import online.newspaper.backend.security.PersonDetails;
 import online.newspaper.backend.services.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/likes")
@@ -17,18 +25,33 @@ public class LikesController {
     }
 
     @GetMapping("/{articleId}/count")
-    public int getLikesCountForArticle(@PathVariable("articleId") int articleId) {
-        return likeService.getLikesCountForArticle(articleId);
+    public ResponseEntity<Map<String, Integer>> getLikesCountForArticle(@PathVariable("articleId") int articleId) {
+//        return likeService.getLikesCountForArticle(articleId);
+        int count = likeService.getLikesCountForArticle(articleId);
+
+        return ResponseEntity.ok(Map.of("count", count));
     }
 
-    // TODO
-//    @GetMapping("/{id}/likes/check")
-//    public boolean checkUserLikeForArticle(@PathVariable("id") int id) {
-//
-//    }
+    @GetMapping("/{articleId}/check")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<LikeStatusResponse> checkUserLikeForArticle(@PathVariable("articleId") int articleId, Authentication authentication) {
+        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
+        Person currentUser = personDetails.getPerson();
 
-//    @PostMapping("/{id}/likes")
-//    public Like toggleLikeForArticle(@PathVariable("id") int id) {
-//        // check if user auth
-//    }
+        boolean isLiked = likeService.isLikedByUser(articleId, currentUser.getId());
+        int likesCount = likeService.getLikesCountForArticle(articleId);
+
+        return ResponseEntity.ok(new LikeStatusResponse(isLiked, likesCount));
+    }
+
+    @PostMapping("/{articleId}/switchLike")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<LikeResponse> switchLikeForArticle(@PathVariable("articleId") int articleId, Authentication authentication) {
+        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
+        Person currentUser = personDetails.getPerson();
+
+        LikeResponse response = likeService.switchUserLikeForArticle(articleId, currentUser.getId());
+
+        return ResponseEntity.ok(response);
+    }
 }
