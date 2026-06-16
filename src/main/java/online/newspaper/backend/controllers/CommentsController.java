@@ -44,8 +44,8 @@ public class CommentsController {
 
     @GetMapping("/{articleId}")
     public ResponseEntity<CommentPageResponse> getArticleComments(@PathVariable("articleId") int articleId,
-                                                                    @RequestParam(defaultValue = "0") int page,
-                                                                    @RequestParam(defaultValue = "3") int size) {
+                                                                  @RequestParam(defaultValue = "0") int page,
+                                                                  @RequestParam(defaultValue = "3") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Comment> commentsPage = commentService.findALlCommentsForArticle(articleId, pageable);
 
@@ -70,9 +70,9 @@ public class CommentsController {
 
     @PostMapping("/{articleId}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> createCommentForArticle(@PathVariable("articleId") int articleId,
-                                                     @Valid @RequestBody CommentRequest commentRequest,
-                                                     Authentication authentication) {
+    public ResponseEntity<CommentResponse> createCommentForArticle(@PathVariable("articleId") int articleId,
+                                                                   @Valid @RequestBody CommentRequest commentRequest,
+                                                                   Authentication authentication) {
         PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
         Person currentUser = personDetails.getPerson();
 
