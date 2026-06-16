@@ -25,18 +25,17 @@ public class CommentService {
         this.articlesRepository = articlesRepository;
     }
 
-//    public List<Comment> findALlCommentsForArticle(int articleId) {
-//        return commentsRepository.findByArticleIdOrderByCreatedAtDesc(articleId);
-//    }
-
+    // все комментарии к статье с пагинацией
     public Page<Comment> findALlCommentsForArticle(int articleId, Pageable pageable) {
         return commentsRepository.findByArticleIdOrderByCreatedAtDesc(articleId, pageable);
     }
 
+    // количество комментариев к статье
     public int getCommentsCountForArticle(int articleId) {
         return commentsRepository.countByArticleId(articleId);
     }
 
+    // сохранение комментария
     public Comment saveCommentForArticle(int articleId, Comment comment) {
         Article foundArticleReference = articlesRepository.getReferenceById(articleId);
         comment.setArticle(foundArticleReference);

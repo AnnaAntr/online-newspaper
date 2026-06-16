@@ -2,7 +2,6 @@ package online.newspaper.backend.security;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,15 +18,13 @@ public class JWTUtil {
     private String jwtSecret;
 
     private SecretKey generateKey() {
-        // Автоматически преобразует строку в ключ правильной длины
-        // Для HS512 нужно минимум 64 байта (512 бит)
         byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
 
-        // Если ключ слишком короткий, дополняем его
+        // если ключ слишком короткий, дополняем его
         if (keyBytes.length < 48) {
             byte[] paddedKey = new byte[48];
             System.arraycopy(keyBytes, 0, paddedKey, 0, keyBytes.length);
-            // Заполняем остаток повторением ключа
+            // заполняем остаток повторением ключа
             for (int i = keyBytes.length; i < 48; i++) {
                 paddedKey[i] = keyBytes[i % keyBytes.length];
             }

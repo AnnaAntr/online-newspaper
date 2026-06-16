@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,21 +24,13 @@ public class ArticleService {
         this.articlesRepository = articlesRepository;
     }
 
+    // поиск одной статьи
     public Article findArticle(int id) {
         Optional<Article> foundArticle = articlesRepository.findById(id);
         return foundArticle.orElse(null);
     }
 
-    /*public List<Article> findFreshArticles() {
-        LocalDateTime dayAgo = LocalDateTime.now().minusHours(24);
-        return articlesRepository.findByCreatedAtAfterOrderByCreatedAtDesc(dayAgo);
-    }
-
-    public List<Article> findArchiveArticles() {
-        LocalDateTime dayAgo = LocalDateTime.now().minusHours(24);
-        return articlesRepository.findByCreatedAtBeforeOrderByCreatedAtDesc(dayAgo);
-    }*/
-
+    // поиск статей на последние 24 часа с пагинацией
     public Page<Article> findFreshArticlesWithPagination(int page, int size) {
         LocalDateTime dayAgo = LocalDateTime.now().minusHours(24);
         Date dayAgoDate = Date.from(dayAgo.atZone(ZoneId.systemDefault()).toInstant());
@@ -48,6 +39,7 @@ public class ArticleService {
         return articlesRepository.findByCreatedAtAfterOrderByCreatedAtDesc(dayAgoDate, pageable);
     }
 
+    // поиск архивных статей
     public Page<Article> findArchiveArticlesWithPagination(int page, int size) {
         LocalDateTime dayAgo = LocalDateTime.now().minusHours(24);
         Date dayAgoDate = Date.from(dayAgo.atZone(ZoneId.systemDefault()).toInstant());

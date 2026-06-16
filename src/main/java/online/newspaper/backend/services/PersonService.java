@@ -18,15 +18,18 @@ public class PersonService {
         this.peopleRepository = peopleRepository;
     }
 
+    // посик пользователя по id
     public Person findPerson(int id) {
         Optional<Person> foundUser = peopleRepository.findById(id);
         return foundUser.orElse(null);
     }
 
+    // проверка существования пользователя по email
     public boolean checkPersonExistsByEmail(String email) {
         return peopleRepository.existsByEmail(email);
     }
 
+    // создание пользователя
     public Person createPerson(Person person) {
         return peopleRepository.save(person);
     }

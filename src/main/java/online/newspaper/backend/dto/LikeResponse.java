@@ -1,7 +1,5 @@
 package online.newspaper.backend.dto;
 
-import online.newspaper.backend.models.Like;
-
 public class LikeResponse {
     private int articleId;
     private boolean isLiked;

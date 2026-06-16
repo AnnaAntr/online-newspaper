@@ -25,6 +25,6 @@ public class PersonValidator implements Validator {
         Person person = (Person) target;
 
         if (peopleRepository.findByEmail(person.getEmail()).isPresent())
-            errors.rejectValue("email", "", "Email is registered");
+            errors.rejectValue("email", "", "Email уже зарегистрирован");
     }
 }

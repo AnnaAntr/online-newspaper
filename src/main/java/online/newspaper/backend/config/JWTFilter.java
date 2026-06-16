@@ -26,7 +26,6 @@ public class JWTFilter extends OncePerRequestFilter {
         this.personDetailsService = personDetailsService;
     }
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");

@@ -33,15 +33,7 @@ public class CommentsController {
         this.commentService = commentService;
     }
 
-//    @GetMapping("/{articleId}")
-//    public ResponseEntity<List<CommentResponse>> getArticleComments(@PathVariable("articleId") int articleId) {
-//        List<Comment> comments = commentService.findALlCommentsForArticle(articleId);
-//        List<CommentResponse> response = comments.stream().map(comment -> new CommentResponse(comment)).collect(Collectors.toList());
-//
-//        return ResponseEntity.ok(response);
-//
-//    }
-
+    // комментарии к статье с пагинацией
     @GetMapping("/{articleId}")
     public ResponseEntity<CommentPageResponse> getArticleComments(@PathVariable("articleId") int articleId,
                                                                   @RequestParam(defaultValue = "0") int page,
@@ -61,6 +53,7 @@ public class CommentsController {
         return ResponseEntity.ok(response);
     }
 
+    // количество комментариев к статье
     @GetMapping("/{articleId}/count")
     public ResponseEntity<Map<String, Integer>> getCommentsCountForArticle(@PathVariable("articleId") int articleId) {
         int commentsCount = commentService.getCommentsCountForArticle(articleId);
@@ -68,6 +61,7 @@ public class CommentsController {
         return ResponseEntity.ok(Map.of("count", commentsCount));
     }
 
+    // создание комментария
     @PostMapping("/{articleId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CommentResponse> createCommentForArticle(@PathVariable("articleId") int articleId,

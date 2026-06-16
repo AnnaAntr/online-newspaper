@@ -24,14 +24,15 @@ public class LikesController {
         this.likeService = likeService;
     }
 
+    // количество лайков к статье
     @GetMapping("/{articleId}/count")
     public ResponseEntity<Map<String, Integer>> getLikesCountForArticle(@PathVariable("articleId") int articleId) {
-//        return likeService.getLikesCountForArticle(articleId);
         int count = likeService.getLikesCountForArticle(articleId);
 
         return ResponseEntity.ok(Map.of("count", count));
     }
 
+    // проверка, ставил ли текущий пользователь лайк
     @GetMapping("/{articleId}/check")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<LikeStatusResponse> checkUserLikeForArticle(@PathVariable("articleId") int articleId, Authentication authentication) {
@@ -44,6 +45,7 @@ public class LikesController {
         return ResponseEntity.ok(new LikeStatusResponse(isLiked, likesCount));
     }
 
+    // инвертирование лайка пользователя
     @PostMapping("/{articleId}/switchLike")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<LikeResponse> switchLikeForArticle(@PathVariable("articleId") int articleId, Authentication authentication) {

@@ -39,6 +39,7 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
+    // аутентификация
     @PostMapping("/login")
     public ResponseEntity<?> performLogin(@Valid @RequestBody LoginRequest loginRequest) {
         try {
@@ -60,11 +61,11 @@ public class AuthController {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Ошибка авторизации");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Ошибка авторизации");
         }
     }
 
+    // регистрация
     @PostMapping("/register")
     public ResponseEntity<?> performRegistration(@Valid @RequestBody RegisterRequest registerRequest) {
         if (personService.checkPersonExistsByEmail(registerRequest.getEmail())) {
