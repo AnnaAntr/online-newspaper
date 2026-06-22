@@ -48,6 +48,10 @@ public class PersonDetails implements UserDetails {
         return true;
     }
 
+    public String getEmail() {
+        return this.person.getEmail();
+    }
+
     public Person getPerson() {
         return this.person;
     }

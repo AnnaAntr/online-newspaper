@@ -18,12 +18,6 @@ public class PersonService {
         this.peopleRepository = peopleRepository;
     }
 
-    // поиск пользователя по id
-//    public Person findPerson(int id) {
-//        Optional<Person> foundUser = peopleRepository.findById(id);
-//        return foundUser.orElse(null);
-//    }
-
     // проверка существования пользователя по email
     public boolean checkPersonExistsByEmail(String email) {
         return peopleRepository.existsByEmail(email);
