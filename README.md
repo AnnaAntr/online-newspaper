@@ -12,6 +12,7 @@ Backend-часть приложения "Интернет-газета".
 ```shell
 git clone http://git.nic.etu/aantrushina/online-newspaper
 cd online-newspaper
+git checkout develop
 ```
 ### 2. Настройка БД
 2.1 Установить PostgreSQL  
