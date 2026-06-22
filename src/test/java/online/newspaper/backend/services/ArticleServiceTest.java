@@ -118,6 +118,7 @@ public class ArticleServiceTest {
         verify(articlesRepository, times(1)).findByCreatedAtAfterOrderByCreatedAtDesc(any(Date.class), eq(pageable));
     }
 
+    // время в findByCreatedAtAfterOrderByCreatedAtDesc должно быть (текущее - 1 день + погрешность)
     @Test
     void findFreshArticlesWithPagination_ShouldUseCorrectDateFilter() {
         int page = 0;
@@ -179,5 +180,26 @@ public class ArticleServiceTest {
         verify(articlesRepository, times(1)).findByCreatedAtBeforeOrderByCreatedAtDesc(any(Date.class), eq(pageable));
     }
 
+    @Test
+    void finArchiveArticlesWithPagination_ShouldUseCorrectDateFilter() {
+        int page = 0;
+        int size = 5;
+        Pageable pageable = PageRequest.of(page, size);
 
+        ArgumentCaptor<Date> dateCaptor = ArgumentCaptor.forClass(Date.class);
+
+        when(articlesRepository.findByCreatedAtBeforeOrderByCreatedAtDesc(dateCaptor.capture(), eq(pageable)))
+                .thenReturn(new PageImpl<>(testArticles, pageable, testArticles.size()));
+
+        articleService.findArchiveArticlesWithPagination(page, size);
+
+        Date capturedDate = dateCaptor.getValue();
+        assertNotNull(capturedDate);
+
+        long currentTime = System.currentTimeMillis();
+        long capturedTime = capturedDate.getTime();
+        long difference = currentTime - capturedTime;
+
+        assertTrue(difference >= (24 * 60 * 60 * 1000 - 1000) && difference <= (24 * 60 * 60 * 1000 + 1000));
+    }
 }
