@@ -6,11 +6,11 @@ Backend-часть приложения "Интернет-газета".
 ### 1. Клонирование репозитория
 #### В Intellij Idea
 1.1 File -> New -> Project from Version Control -> GitLab  
-1.2 URL проекта на GitLab: http://git.nic.etu/aantrushina/online-newspaper  
+1.2 URL проекта на GitLab: http://git.nic.etu/aantrushina/online-newspaper.git  
 1.3 После открытия проекта переключение на ветку develop: Remote -> develop -> Checkout  
 #### В командной строке
 ```shell
-git clone http://git.nic.etu/aantrushina/online-newspaper
+git clone http://git.nic.etu/aantrushina/online-newspaper.git  
 cd online-newspaper
 git checkout develop
 ```
