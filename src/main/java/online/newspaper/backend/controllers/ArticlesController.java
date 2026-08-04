@@ -12,7 +12,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +34,6 @@ public class ArticlesController {
         this.likeService = likeService;
     }
 
-    // одна статья по id
     @GetMapping("/{articleId}")
     public ResponseEntity<?> getOneArticle(@PathVariable("articleId") int articleId, Authentication authentication) {
         Article foundArticle = articleService.findArticle(articleId);
@@ -50,7 +53,6 @@ public class ArticlesController {
         return ResponseEntity.ok(response);
     }
 
-    // статьи за последние 24 часа
     @GetMapping("/main")
     public ResponseEntity<ArticlePageResponse> getFreshArticles(@RequestParam(defaultValue = "0") int page,
                                                                 @RequestParam(defaultValue = "5") int size,
@@ -77,7 +79,6 @@ public class ArticlesController {
         return ResponseEntity.ok(response);
     }
 
-    // архив статей
     @GetMapping("/archive")
     public ResponseEntity<ArticlePageResponse> getArchiveArticles(@RequestParam(defaultValue = "0") int page,
                                                                   @RequestParam(defaultValue = "5") int size,
@@ -104,7 +105,6 @@ public class ArticlesController {
         return ResponseEntity.ok(response);
     }
 
-    // функция для конвертации объекта статьи в DTO
     private ArticleResponse convertToArticleResponse(Article article, int userId) {
         ArticleResponse articleResponse = new ArticleResponse(article);
 

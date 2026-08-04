@@ -24,13 +24,11 @@ public class ArticleService {
         this.articlesRepository = articlesRepository;
     }
 
-    // поиск одной статьи
     public Article findArticle(int id) {
         Optional<Article> foundArticle = articlesRepository.findById(id);
         return foundArticle.orElse(null);
     }
 
-    // поиск статей на последние 24 часа с пагинацией
     public Page<Article> findFreshArticlesWithPagination(int page, int size) {
         LocalDateTime dayAgo = LocalDateTime.now().minusHours(24);
         Date dayAgoDate = Date.from(dayAgo.atZone(ZoneId.systemDefault()).toInstant());
@@ -39,7 +37,6 @@ public class ArticleService {
         return articlesRepository.findByCreatedAtAfterOrderByCreatedAtDesc(dayAgoDate, pageable);
     }
 
-    // поиск архивных статей
     public Page<Article> findArchiveArticlesWithPagination(int page, int size) {
         LocalDateTime dayAgo = LocalDateTime.now().minusHours(24);
         Date dayAgoDate = Date.from(dayAgo.atZone(ZoneId.systemDefault()).toInstant());

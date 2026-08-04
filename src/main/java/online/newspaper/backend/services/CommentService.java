@@ -10,8 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional
 public class CommentService {
@@ -25,17 +23,14 @@ public class CommentService {
         this.articlesRepository = articlesRepository;
     }
 
-    // все комментарии к статье с пагинацией
     public Page<Comment> findALlCommentsForArticle(int articleId, Pageable pageable) {
         return commentsRepository.findByArticleIdOrderByCreatedAtDesc(articleId, pageable);
     }
 
-    // количество комментариев к статье
     public int getCommentsCountForArticle(int articleId) {
         return commentsRepository.countByArticleId(articleId);
     }
 
-    // сохранение комментария
     public Comment saveCommentForArticle(int articleId, Comment comment) {
         Article foundArticleReference = articlesRepository.getReferenceById(articleId);
         comment.setArticle(foundArticleReference);

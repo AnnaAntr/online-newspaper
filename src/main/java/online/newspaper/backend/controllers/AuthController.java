@@ -7,39 +7,44 @@ import online.newspaper.backend.models.Person;
 import online.newspaper.backend.security.JWTUtil;
 import online.newspaper.backend.security.PersonDetails;
 import online.newspaper.backend.services.PersonService;
-import online.newspaper.backend.util.PersonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final PersonValidator personValidator;
     private final PersonService personService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
 
+    private static final Logger logger = Logger.getLogger(AuthController.class.getName());
+
     @Autowired
-    public AuthController(PersonValidator personValidator, PersonService personService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
-        this.personValidator = personValidator;
+    public AuthController(PersonService personService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
         this.personService = personService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
 
-    // аутентификация
     @PostMapping("/login")
     public ResponseEntity<?> performLogin(@Valid @RequestBody LoginRequest loginRequest) {
         try {
@@ -57,15 +62,15 @@ public class AuthController {
                     person.getEmail(),
                     person.getName(),
                     person.getSurname()
-                    ));
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Ошибка авторизации");
+            ));
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Неверный логин или пароль");
+        } catch (AuthenticationException e) {
+            logger.log(Level.WARNING, "Ошибка аутентификации для " + loginRequest.getEmail(), e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Ошибка аутентификации");
         }
     }
 
-    // регистрация
     @PostMapping("/register")
     public ResponseEntity<?> performRegistration(@Valid @RequestBody RegisterRequest registerRequest) {
         if (personService.checkPersonExistsByEmail(registerRequest.getEmail())) {

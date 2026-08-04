@@ -28,19 +28,14 @@ public class LikeService {
         this.peopleRepository = peopleRepository;
     }
 
-    // количество лайков к статье
     public int getLikesCountForArticle(int articleId) {
         return likesRepository.countByArticleId(articleId);
     }
 
-    // проверка, ставил ли текущий пользователь лайк
     public boolean isLikedByUser(int articleId, int userId) {
         return likesRepository.findByArticleIdAndAuthorId(articleId, userId).isPresent();
     }
 
-    // инвертирование лайка текущего пользователя
-    // если лайка не было, то создаем
-    // если был, то удаляем
     public LikeResponse switchUserLikeForArticle(int articleId, int userId) {
         Article article = articlesRepository.findById(articleId).orElse(null);
         Person user = peopleRepository.findById(userId).orElse(null);

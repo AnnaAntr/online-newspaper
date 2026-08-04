@@ -14,17 +14,16 @@ import java.util.Date;
 @Component
 public class JWTUtil {
 
-    @Value("$jwtSecret")
+    @Value("${jwtSecret}")
     private String jwtSecret;
 
     private SecretKey generateKey() {
         byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
 
-        // если ключ слишком короткий, дополняем его
         if (keyBytes.length < 48) {
             byte[] paddedKey = new byte[48];
             System.arraycopy(keyBytes, 0, paddedKey, 0, keyBytes.length);
-            // заполняем остаток повторением ключа
+
             for (int i = keyBytes.length; i < 48; i++) {
                 paddedKey[i] = keyBytes[i % keyBytes.length];
             }
@@ -36,7 +35,6 @@ public class JWTUtil {
 
     public String generateToken(String email) {
         Date now = new Date();
-        // истекает через 24 часа
         Date expireDate = new Date(now.getTime() + 1000 * 60 * 60 * 24);
 
         return Jwts.builder()

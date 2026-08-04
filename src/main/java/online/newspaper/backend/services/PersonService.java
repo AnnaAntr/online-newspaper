@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Transactional
 public class PersonService {
@@ -18,12 +16,10 @@ public class PersonService {
         this.peopleRepository = peopleRepository;
     }
 
-    // проверка существования пользователя по email
     public boolean checkPersonExistsByEmail(String email) {
         return peopleRepository.existsByEmail(email);
     }
 
-    // создание пользователя
     public Person createPerson(Person person) {
         return peopleRepository.save(person);
     }

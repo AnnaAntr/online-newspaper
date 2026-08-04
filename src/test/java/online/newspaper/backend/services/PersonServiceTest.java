@@ -9,10 +9,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.any;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonServiceTest {
@@ -35,7 +39,6 @@ public class PersonServiceTest {
         testPerson.setPassword("ivanov_password123");
     }
 
-    // checkPersonExistsByEmail ------------------------------------------------------
     @Test
     void checkPersonExistsByEmail_WhenEmailExists_ShouldReturnTrue() {
         String email = "ivanov@test.com";
@@ -75,7 +78,6 @@ public class PersonServiceTest {
         verify(peopleRepository, times(1)).existsByEmail(email);
     }
 
-    // createPerson ----------------------------------------------------------------
     @Test
     void createPerson_ShouldSaveAndReturnPerson() {
         Person personToSave = new Person();

@@ -14,8 +14,15 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
 
 import java.util.Date;
 import java.util.List;
@@ -52,7 +59,6 @@ public class ArticleServiceTest {
         testArticles = List.of(article1, article2);
     }
 
-    // findArticle ---------------------------------------------------------------------
     @Test
     void findArticle_WhenExists_ShouldReturnArticle() {
         int articleId = 1;
@@ -80,7 +86,6 @@ public class ArticleServiceTest {
         verify(articlesRepository, times(1)).findById(articleId);
     }
 
-    // findFreshArticlesWithPagination ---------------------------------------------------------------------
     @Test
     void findFreshArticlesWithPagination_ShouldReturnPageOfArticles() {
         int page = 0;
@@ -118,7 +123,6 @@ public class ArticleServiceTest {
         verify(articlesRepository, times(1)).findByCreatedAtAfterOrderByCreatedAtDesc(any(Date.class), eq(pageable));
     }
 
-    // время в findByCreatedAtAfterOrderByCreatedAtDesc должно быть (текущее - 1 день + погрешность)
     @Test
     void findFreshArticlesWithPagination_ShouldUseCorrectDateFilter() {
         int page = 0;
@@ -142,7 +146,6 @@ public class ArticleServiceTest {
         assertTrue(difference >= (24 * 60 * 60 * 1000 - 1000) && difference <= (24 * 60 * 60 * 1000 + 1000));
     }
 
-    // findArchiveArticlesWithPagination ---------------------------------------------------------------------
     @Test
     void findArchiveArticlesWithPagination_ShouldReturnPageOfArticles() {
         int page = 0;

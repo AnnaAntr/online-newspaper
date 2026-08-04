@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -33,8 +34,10 @@ public class JWTFilter extends OncePerRequestFilter {
         if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
             String jwt = authHeader.substring(7);
 
-            if (jwt.isBlank() || !jwtUtil.validateToken(jwt))
+            if (jwt.isBlank() || !jwtUtil.validateToken(jwt)) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT token");
+                return;
+            }
             else {
                 try {
                     String email = jwtUtil.extractEmail(jwt);
@@ -49,8 +52,7 @@ public class JWTFilter extends OncePerRequestFilter {
                     if (SecurityContextHolder.getContext().getAuthentication() == null) {
                         SecurityContextHolder.getContext().setAuthentication(authToken);
                     }
-                }
-                catch (Exception e) {
+                } catch (UsernameNotFoundException e) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT token");
                 }
             }

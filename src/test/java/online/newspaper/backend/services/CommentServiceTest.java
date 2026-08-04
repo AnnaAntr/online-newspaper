@@ -19,8 +19,13 @@ import org.springframework.data.domain.Pageable;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.any;
 
 @ExtendWith(MockitoExtension.class)
 public class CommentServiceTest {
@@ -70,7 +75,6 @@ public class CommentServiceTest {
         testComments = List.of(comment1, comment2);
     }
 
-    // findALlCommentsForArticle ----------------------------------------------------------------------------------------------
     @Test
     void findAllCommentsForArticle_ShouldReturnPageOfComments() {
         int articleId = 1;
@@ -111,7 +115,6 @@ public class CommentServiceTest {
         verify(commentsRepository, times(1)).findByArticleIdOrderByCreatedAtDesc(articleId, pageable);
     }
 
-    // getCommentsCountForArticle -------------------------------------------------------------------------
     @Test
     void getCommentsCountForArticle_ShouldReturnCorrectCount() {
         int articleId = 1;
@@ -140,7 +143,6 @@ public class CommentServiceTest {
         verify(commentsRepository, times(1)).countByArticleId(articleId);
     }
 
-    // saveCommentForArticle ------------------------------------------------------------------------
     @Test
     void saveCommentForArticle_ShouldSaveAndReturnComment() {
         Comment commentToSave = new Comment();

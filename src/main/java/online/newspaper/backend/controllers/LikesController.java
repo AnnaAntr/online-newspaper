@@ -9,7 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -24,7 +28,6 @@ public class LikesController {
         this.likeService = likeService;
     }
 
-    // количество лайков к статье
     @GetMapping("/{articleId}/count")
     public ResponseEntity<Map<String, Integer>> getLikesCountForArticle(@PathVariable("articleId") int articleId) {
         int count = likeService.getLikesCountForArticle(articleId);
@@ -32,7 +35,6 @@ public class LikesController {
         return ResponseEntity.ok(Map.of("count", count));
     }
 
-    // проверка, ставил ли текущий пользователь лайк
     @GetMapping("/{articleId}/check")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<LikeStatusResponse> checkUserLikeForArticle(@PathVariable("articleId") int articleId, Authentication authentication) {
@@ -45,7 +47,6 @@ public class LikesController {
         return ResponseEntity.ok(new LikeStatusResponse(isLiked, likesCount));
     }
 
-    // инвертирование лайка пользователя
     @PostMapping("/{articleId}/switchLike")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<LikeResponse> switchLikeForArticle(@PathVariable("articleId") int articleId, Authentication authentication) {

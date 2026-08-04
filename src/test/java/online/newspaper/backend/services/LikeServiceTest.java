@@ -16,8 +16,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.any;
 
 @ExtendWith(MockitoExtension.class)
 public class LikeServiceTest {
@@ -57,7 +62,6 @@ public class LikeServiceTest {
         testLike.setAuthor(testUser);
     }
 
-    // getLikesCountForArticle -----------------------------------------------------
     @Test
     void getLikesCountForArticle_ShouldReturnCorrectCount() {
         int articleId = 1;
@@ -86,7 +90,6 @@ public class LikeServiceTest {
         verify(likesRepository, times(1)).countByArticleId(articleId);
     }
 
-    // isLikedByUser ---------------------------------------------------------------
     @Test
     void isLikedByUser_WhenLiked_ShouldReturnTrue() {
         int articleId = 1;
@@ -115,7 +118,6 @@ public class LikeServiceTest {
         verify(likesRepository, times(1)).findByArticleIdAndAuthorId(articleId, userId);
     }
 
-    // switchUserLikeForArticle ----------------------------------------------------------------
     @Test
     void switchUserLikeForArticle_ShouldSwitchLikeCorrectly() {
         int articleId = 1;
@@ -124,7 +126,6 @@ public class LikeServiceTest {
         when(articlesRepository.findById(articleId)).thenReturn(Optional.of(testArticle));
         when(peopleRepository.findById(userId)).thenReturn(Optional.of(testUser));
 
-        // создание лайка
         when(likesRepository.findByArticleIdAndAuthorId(articleId, userId)).thenReturn(Optional.empty());
         when(likesRepository.countByArticleId(articleId)).thenReturn(1);
 
@@ -135,7 +136,6 @@ public class LikeServiceTest {
 
         verify(likesRepository, times(1)).save(any(Like.class));
 
-        // удаление лайка
         when(likesRepository.findByArticleIdAndAuthorId(articleId, userId)).thenReturn(Optional.of(testLike));
         when(likesRepository.countByArticleId(articleId)).thenReturn(0);
 
